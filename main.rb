@@ -65,21 +65,17 @@ class TicTacToe
   # attr_reader :winning_combinations
   
 
-  @@squares = "1 2 3   _ _ _\n4 5 6   _ _ _\n7 8 9   _ _ _"
-  @@available_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  @@winning_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
-  @@player_selections = []
-  @@computer_selections = []
+  
 
 
   def check_pick(user_selection)
-    if @@available_numbers.include?(user_selection)
-      user_selection_index = @@squares.index(user_selection.to_s)
-      @@squares[user_selection_index + 8] = 'X'
+    if @available_numbers.include?(user_selection)
+      user_selection_index = @squares.index(user_selection.to_s)
+      @squares[user_selection_index + 8] = 'X'
       puts 'Here is your pick:'
-      puts @@squares
-      @@player_selections.push(user_selection)
-      @@available_numbers.delete(user_selection)
+      puts @squares
+      @player_selections.push(user_selection)
+      @available_numbers.delete(user_selection)
     else
       puts 'pick an available square'
       user_selection = gets.chomp.to_i
@@ -89,43 +85,52 @@ class TicTacToe
 
   def player_turn
     puts 'Please pick a square from 1 to 9'
-    puts @@squares
+    puts @squares
     user_selection = gets.chomp.to_i
     check_pick(user_selection)
   end
 
   def check_for_win(player, player_selections)
-    @@winning_combinations.each do |combo|
+    @winning_combinations.each do |combo|
       if combo - player_selections == []
         puts "#{player} wins"  
-        @@available_numbers.clear      
+        @available_numbers.clear      
         break
       end
     end
   end
 
   def computer_turn
-    comp_selection = @@available_numbers.sample
-    comp_selection_index = @@squares.index(comp_selection.to_s)
-    @@squares[comp_selection_index + 8] = '0'
+    comp_selection = @available_numbers.sample
+    comp_selection_index = @squares.index(comp_selection.to_s)
+    @squares[comp_selection_index + 8] = '0'
     puts 'Here is computer pick:'
-    puts @@squares
-    @@computer_selections.push(comp_selection)
-    @@available_numbers.delete(comp_selection)
+    puts @squares
+    @computer_selections.push(comp_selection)
+    @available_numbers.delete(comp_selection)
   end
 
   def initialize
+
+    @squares = "1 2 3   _ _ _\n4 5 6   _ _ _\n7 8 9   _ _ _"
+    @available_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    @winning_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+    @player_selections = []
+    @computer_selections = []
       
 
-    while @@available_numbers.length > 0
+    while @available_numbers.length > 0
+    puts('')
+    sleep(0.5)
     player_turn
     sleep(1)
-    check_for_win(player = "player", player_selections = @@player_selections)
+    check_for_win(player = "player", player_selections = @player_selections)
 
     puts ''
-    if @@available_numbers.length > 0
+    
+    if @available_numbers.length > 0
       computer_turn
-      check_for_win(player = "computer", player_selections = @@computer_selections)
+      check_for_win(player = "computer", player_selections = @computer_selections)
     end
   end
   end
